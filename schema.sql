@@ -1,8 +1,9 @@
-CREATE DATABASE reclamoEmpresaElectrica
+DROP database IF exists reclamoempresaelectrica;
+CREATE DATABASE IF NOT EXISTS reclamoempresaelectrica;
 
 USE reclamoempresaelectrica;
 
- DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario(
 nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
 direccion VARCHAR (35),
@@ -62,9 +63,9 @@ CREATE TABLE reclamo(
 	fecha_resol DATE,
 	nro_usuario INTEGER,
 	cod_motivo INTEGER,
-CONSTRAINT pk_nro PRIMARY KEY (nro),
-CONSTRAINT fk_usuario FOREIGN KEY (nro_usuario) REFERENCES usuario ON DELETE CASCADE,
-CONSTRAINT fk_motivo FOREIGN KEY (cod_motivo) REFERENCES motivo ON UPDATE CASCADE
+	CONSTRAINT pk_nro PRIMARY KEY (nro),
+	CONSTRAINT fk_usuario FOREIGN KEY (nro_usuario) REFERENCES usuario (nro_ide) ON DELETE CASCADE,
+	CONSTRAINT fk_motivo FOREIGN KEY (cod_motivo) REFERENCES motivo (codigo) ON UPDATE CASCADE
 ); 
 
  DROP TABLE IF EXISTS material;
@@ -79,8 +80,8 @@ CREATE TABLE soluciona(
 	nro_ide INTEGER,
 	nro_reclamo INTEGER,
 	CONSTRAINT pk_soluciona PRIMARY KEY (nro_ide ,nro_reclamo),
-	CONSTRAINT fk_nro_ide_soluciona FOREIGN KEY (nro_ide) REFERENCES empleado ON DELETE CASCADE,
-	CONSTRAINT fk_reclamo FOREIGN KEY (nro_reclamo) REFERENCES reclamo ON DELETE CASCADE
+	CONSTRAINT fk_nro_ide_soluciona FOREIGN KEY (nro_ide) REFERENCES empleado (nro_ide) ON DELETE CASCADE,
+	CONSTRAINT fk_reclamo FOREIGN KEY (nro_reclamo) REFERENCES reclamo (nro) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS usa;
@@ -89,7 +90,7 @@ CREATE TABLE usa(
 	nro_reclamo INTEGER,
 	CONSTRAINT pk_usa PRIMARY KEY (cod_material ,nro_reclamo),
 	CONSTRAINT fk_cod_material FOREIGN KEY (cod_material) REFERENCES material (codigo_mat) ON DELETE CASCADE,
-	CONSTRAINT fk_reclamo_usa FOREIGN KEY (nro_reclamo) REFERENCES reclamo ON DELETE CASCADE
+	CONSTRAINT fk_reclamo_usa FOREIGN KEY (nro_reclamo) REFERENCES reclamo (nro) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS rellamado;
@@ -99,10 +100,5 @@ CREATE TABLE rellamado(
 	fecha DATE,
 	hora TIME,
 	CONSTRAINT pk_usa PRIMARY KEY (cod_reclamo ,nro_llamado),
-	CONSTRAINT fk_nro_reclamo FOREIGN KEY (cod_reclamo) REFERENCES reclamo ON DELETE CASCADE
+	CONSTRAINT fk_nro_reclamo FOREIGN KEY (cod_reclamo) REFERENCES reclamo (nro) ON DELETE CASCADE
 );
-
-
-
-
-
