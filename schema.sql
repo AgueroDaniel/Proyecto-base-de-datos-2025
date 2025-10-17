@@ -5,45 +5,45 @@ USE reclamoempresaelectrica;
 
 DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario(
-nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
-direccion VARCHAR (35),
-tel INTEGER NOT NULL,
-CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide)
+	nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
+	direccion VARCHAR (35),
+	tel INTEGER NOT NULL,
+	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide)
 ); 
 
 
  DROP TABLE IF EXISTS empresa;
 CREATE TABLE empresa(
-nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
-cuit INTEGER NOT NULL,
-/*preguntar si es unique*/
-capacidadKW INTEGER NOT NULL,
-CONSTRAINT potencia_instalada CHECK (capacidadKW >= 0 AND capacidadKW < 50000),
-CONSTRAINT fk_nro_ide FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide),
-CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide)
+	nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
+	cuit INTEGER NOT NULL,
+	/*preguntar si es unique*/
+	capacidadKW INTEGER NOT NULL,
+	CONSTRAINT potencia_instalada CHECK (capacidadKW >= 0 AND capacidadKW < 50000),
+	CONSTRAINT fk_nro_ide FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide),
+	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide)
 ); 
 
  DROP TABLE IF EXISTS persona;
 CREATE TABLE persona(
-nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
-dni INTEGER NOT NULL,
-CONSTRAINT persona CHECK (dni > 0 AND dni < 1000000000),
-CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide),
-CONSTRAINT fk_nro_ide_persona FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide)
+	nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
+	dni INTEGER NOT NULL,
+	CONSTRAINT persona CHECK (dni > 0 AND dni < 1000000000),
+	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide),
+	CONSTRAINT fk_nro_ide_persona FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide)
 ); 
 
 
 DROP TABLE IF EXISTS empleado;
 CREATE TABLE empleado(
-nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
-/*preguntarle al profe el primary key*/
-nombre VARCHAR (45),
-apellido VARCHAR (45),
-fecha_nac DATE,
-sueldo INTEGER NOT NULL,
-edad INTEGER NOT NULL, 
-CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide),
-CONSTRAINT fk_nro_ide_empleado FOREIGN KEY (nro_ide) REFERENCES persona (nro_ide)
+	nro_ide INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
+	/*preguntarle al profe el primary key*/
+	nombre VARCHAR (45),
+	apellido VARCHAR (45),
+	fecha_nac DATE,
+	sueldo INTEGER NOT NULL,
+	edad INTEGER NOT NULL, 
+	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide),
+	CONSTRAINT fk_nro_ide_empleado FOREIGN KEY (nro_ide) REFERENCES persona (nro_ide)
 ); 
 
 
