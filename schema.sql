@@ -65,6 +65,7 @@ CREATE TABLE reclamo(
 	cod_motivo INTEGER,
 	CONSTRAINT pk_nro PRIMARY KEY (nro),
 	CONSTRAINT fk_usuario FOREIGN KEY (nro_usuario) REFERENCES usuario (nro_ide) ON DELETE CASCADE,
+CONSTRAINT fecha_valida CHECK (fecha <= fecha_resol),
 	CONSTRAINT fk_motivo FOREIGN KEY (cod_motivo) REFERENCES motivo (codigo) ON UPDATE CASCADE
 ); 
 
