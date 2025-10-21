@@ -51,7 +51,7 @@ CREATE TABLE empleado(
  DROP TABLE IF EXISTS motivo;
 CREATE TABLE motivo(
 	codigo INTEGER UNIQUE AUTO_INCREMENT NOT NULL,
-	descripcion INTEGER,
+	descripcion VARCHAR(45),
 	CONSTRAINT pk_codigo PRIMARY KEY (codigo)
 ); 
 
