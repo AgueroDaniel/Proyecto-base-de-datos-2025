@@ -1,3 +1,4 @@
+
 INSERT INTO usuario (nro_ide, direccion, tel) 
 VALUES
 	(1, 'Sabatini 1520', 4662919),
@@ -38,10 +39,11 @@ INSERT INTO motivo(codigo, descripcion) VALUES
 	(4, 'No me anda el televisor y pague la luz');
 
 INSERT INTO reclamo (nro, fecha, hora, fecha_resol, nro_usuario, cod_motivo) VALUES
-	(0, '2025-5-12', '5:5:5', '2061-5-1', 5, 1),
-	(1, '2025-5-12', '5:5:5', '2061-5-1', 6, 2),
+	(1, '2025-5-12', '5:5:5', '2061-5-1', 5, 1),
+	(2, '2025-5-12', '5:5:5', '2061-5-1', 6, 2),
 	(3,'2025-5-12', '5:5:5', '2061-5-1', 7, 3),
-	(4, '2025-5-12', '5:5:5', '2025-5-12', 8, 4);
+    (4, '2025-4-4', '5:5:4', '2026-5-7', 6, 1),
+	(5, '2025-5-12', '5:5:5', '2025-5-12', 8, 4);
 
 INSERT INTO material (codigo_mat, descrip_mat) VALUES
 	(1, 'Cables'),
@@ -50,12 +52,22 @@ INSERT INTO material (codigo_mat, descrip_mat) VALUES
 	(4, 'Cobre');
     
 INSERT INTO soluciona (nro_ide, nro_reclamo) VALUES
-	(1, 1),
-    (2, 2),
-    (3, 0),
-    (4, 3)
+	(5, 1),
+    (6, 2),
+    (7, 3),
+    (8, 4);
     
-INSERT INTO usa ()    
+INSERT INTO usa (cod_material, nro_reclamo) VALUES
+		(1, 2),
+        (2, 1),
+        (3, 4),
+        (4, 3); 
+   
+ INSERT INTO rellamado (cod_reclamo, nro_llamado, fecha, hora) VALUES
+	(1, 1, '2025-5-7', '5:4:7'),
+    (2, 2, '2003-7-21', '7:8:9'),
+    (3, 3, '2004-8-30', '9:6:2'),
+    (4, 4, '2005-9-25', '7:8:2')
 
 DROP DATABASE IF EXISTS reclamoempresaelectrica;
 CREATE DATABASE reclamoempresaelectrica; 
@@ -77,7 +89,7 @@ CREATE TABLE empresa(
 	cuit INTEGER UNIQUE,
 	capacidadKW INTEGER NOT NULL,
 	CONSTRAINT potencia_instalada CHECK (capacidadKW >= 0 AND capacidadKW < 50000),
-	CONSTRAINT fk_nro_ide FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide),
+	CONSTRAINT fk_nro_ide FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide) ON DELETE CASCADE,
 	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide)
 ); 
 
@@ -87,7 +99,7 @@ CREATE TABLE persona(
 	dni INTEGER NOT NULL,
 	CONSTRAINT persona CHECK (dni > 0 AND dni < 1000000000),
 	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide),
-	CONSTRAINT fk_nro_ide_persona FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide)
+	CONSTRAINT fk_nro_ide_persona FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide) ON DELETE CASCADE
 ); 
 
 -- DROP TABLE IF EXISTS empleado;
@@ -99,7 +111,7 @@ CREATE TABLE empleado(
 	fecha_nac DATE,
 	sueldo INTEGER NOT NULL,
 	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide),
-	CONSTRAINT fk_nro_ide_empleado FOREIGN KEY (nro_ide) REFERENCES persona (nro_ide)
+	CONSTRAINT fk_nro_ide_empleado FOREIGN KEY (nro_ide) REFERENCES persona (nro_ide) ON DELETE CASCADE
 ); 
 
 -- DROP TABLE IF EXISTS motivo;
@@ -166,7 +178,7 @@ CREATE TABLE IF NOT EXISTS auditoria (
 	hora TIME,
 	fecha_resol DATE,
 	nro_usuario INTEGER,
-	cod_motivo VARCHAR(45),
+	cod_motivo INTEGER,
     
     fecha_eliminacion DATE,
     db_usuario NVARCHAR(128) NOT NULL,
@@ -175,12 +187,22 @@ CREATE TABLE IF NOT EXISTS auditoria (
 );
 
 delimiter $$
-CREATE TRIGGER trigger_elim_rec
+CREATE TRIGGER trigger_elim_reclamo
 	AFTER DELETE ON reclamo
 	FOR EACH ROW
 	BEGIN
 		INSERT INTO auditoria (nro, fecha, hora, fecha_resol, nro_usuario, cod_motivo, fecha_eliminacion, db_usuario) VALUES
         (OLD.nro, OLD.fecha, OLD.hora, OLD.fecha_resol, OLD.nro_usuario, OLD.cod_motivo, NOW(), CURRENT_USER());
+    END;
+$$
+delimiter ;
+
+delimiter $$
+CREATE TRIGGER trigger_elim_usuario
+	BEFORE DELETE ON usuario
+    FOR EACH ROW
+    BEGIN 
+		DELETE FROM reclamo WHERE nro_usuario = OLD.nro_ide;
     END;
 $$
 delimiter ;
