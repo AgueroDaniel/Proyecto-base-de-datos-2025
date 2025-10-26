@@ -25,7 +25,7 @@ CREATE TABLE empresa(
 -- DROP TABLE IF EXISTS persona;
 CREATE TABLE persona(
 	nro_ide INTEGER UNIQUE NOT NULL,
-	dni INTEGER NOT NULL,
+	dni INTEGER UNIQUE NOT NULL,
 	CONSTRAINT persona CHECK (dni > 0 AND dni < 1000000000),
 	CONSTRAINT pk_nro_ide PRIMARY KEY (nro_ide),
 	CONSTRAINT fk_nro_ide_persona FOREIGN KEY (nro_ide) REFERENCES usuario (nro_ide) ON DELETE CASCADE
@@ -34,7 +34,7 @@ CREATE TABLE persona(
 -- DROP TABLE IF EXISTS empleado;
 CREATE TABLE empleado(
 	nro_ide INTEGER NOT NULL,
-    dni INTEGER NOT NULL,
+    dni INTEGER UNIQUE NOT NULL,
 	nombre VARCHAR (45),
 	apellido VARCHAR (45),
 	fecha_nac DATE,
@@ -84,7 +84,9 @@ CREATE TABLE soluciona(
 CREATE TABLE usa(
 	cod_material INTEGER,
 	nro_reclamo INTEGER,
+    cantidad INTEGER NOT NULL, 
 	CONSTRAINT pk_usa PRIMARY KEY (cod_material, nro_reclamo),
+    CONSTRAINT cantidad_valida CHECK (cantidad > 0),
 	CONSTRAINT fk_cod_material FOREIGN KEY (cod_material) REFERENCES material (codigo_mat) ON DELETE CASCADE,
 	CONSTRAINT fk_reclamo_usa FOREIGN KEY (nro_reclamo) REFERENCES reclamo (nro) ON DELETE CASCADE
 );
@@ -135,10 +137,6 @@ CREATE TRIGGER trigger_elim_usuario
     END;
 $$
 delimiter ;
-	hora TIME,
-	CONSTRAINT pk_usa PRIMARY KEY (cod_reclamo ,nro_llamado),
-	CONSTRAINT fk_nro_reclamo FOREIGN KEY (cod_reclamo) REFERENCES reclamo (nro) ON DELETE CASCADE
-);
 
 INSERT INTO usuario (nro_ide, direccion, tel) 
 VALUES
@@ -198,14 +196,14 @@ INSERT INTO soluciona (nro_ide, nro_reclamo) VALUES
     (7, 3),
     (8, 4);
     
-INSERT INTO usa (cod_material, nro_reclamo) VALUES
-		(1, 2),
-        (2, 1),
-        (3, 4),
-        (4, 3); 
+INSERT INTO usa (cod_material, nro_reclamo, cantidad) VALUES
+		(1, 2, 5),
+        (2, 1, 100),
+        (3, 4, 800),
+        (4, 3, 969); 
    
  INSERT INTO rellamado (cod_reclamo, nro_llamado, fecha, hora) VALUES
 	(1, 1, '2025-5-7', '5:4:7'),
     (2, 2, '2003-7-21', '7:8:9'),
     (3, 3, '2004-8-30', '9:6:2'),
-    (4, 4, '2005-9-25', '7:8:2');
+    (4, 4, '2005-9-25', '7:8:2')
