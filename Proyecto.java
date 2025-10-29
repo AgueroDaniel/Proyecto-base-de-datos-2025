@@ -1,11 +1,16 @@
 //Acceder a base de datos
-import conector.SQLConnection;
+//import conector.SQLConnection;
 import java.util.Scanner;
 //import conector.op;
 //Para printear
 import java.io.*;
 
-  public static int verificar(String ing){
+public int Agregar() {}
+public int Eliminar() {}
+public int Reclamos() {}
+
+
+public static int verificar(String ing){
     ing=ing.toLowerCase();
     if (ing.equals("salir")||ing.equals("exit")||ing.equals("4")){
         return -1;
@@ -28,7 +33,7 @@ import java.io.*;
  public static void main(String[] args){
         int selection = 0;
         Scanner scanner = new Scanner(System.in);
-    
+    Eliminar un reclamo(eliminar).\n    3) Listar reclamos(listar)\n    4) Salir():");
     while (selection > -1){
         System.out.println("\nQue desea realizar:\n    1) Agregar un usuario(agregar).\n"+
                         "    2) Eliminar un reclamo(eliminar).\n    3) Listar reclamos(listar)\n    4) Salir:");
