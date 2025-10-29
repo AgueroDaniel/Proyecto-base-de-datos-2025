@@ -33,7 +33,6 @@ public static int verificar(String ing){
  public static void main(String[] args){
         int selection = 0;
         Scanner scanner = new Scanner(System.in);
-    Eliminar un reclamo(eliminar).\n    3) Listar reclamos(listar)\n    4) Salir():");
     while (selection > -1){
         System.out.println("\nQue desea realizar:\n    1) Agregar un usuario(agregar).\n"+
                         "    2) Eliminar un reclamo(eliminar).\n    3) Listar reclamos(listar)\n    4) Salir:");
