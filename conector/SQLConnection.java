@@ -1,4 +1,4 @@
-package com.db.tp;
+package conector;
 
 import java.sql.*;
 
