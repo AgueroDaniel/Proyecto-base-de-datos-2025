@@ -1,16 +1,4 @@
 
-INSERT INTO usuario (nro_ide, direccion, tel) 
-VALUES
-	(1, 'Sabatini 1520', 4662919),
-	(2, 'Fray cardarelli 280', 4668852),
-	(3, 'General Paz 800', 4667910),
-	(4, 'Constiticion 1566', 358973669),
-
-	(5, 'Sabatini 1520', 4662919),
-	(6, 'Fray cardarelli 280', 4668852),
-	(7, 'General Paz 800', 4667910),
-	(8, 'Constiticion 1566', 358973669);
-
 INSERT INTO empresa (nro_ide, cuit, capacidadKW) 
 VALUES
 	(1, 55789666, 49000),
@@ -43,25 +31,33 @@ INSERT INTO reclamo (nro, fecha, hora, fecha_resol, nro_usuario, cod_motivo) VAL
 	(2, '2025-5-12', '5:5:5', '2061-5-1', 6, 2),
 	(3,'2025-5-12', '5:5:5', '2061-5-1', 7, 3),
     (4, '2025-4-4', '5:5:4', '2026-5-7', 6, 1),
-	(5, '2025-5-12', '5:5:5', '2025-5-12', 8, 4);
+	(5, '2025-5-12', '5:5:5', '2025-5-12', 8, 4),
+    (6, '2025-4-12', '5:4:5', '2025-8-12', 6, 4),
+    (7, '2025-4-12', '5:4:5', '2025-8-12', 5, 1),
+    (8, '2025-4-12', '5:5:5', '2025-5-12', 7, 3);
 
 INSERT INTO material (codigo_mat, descrip_mat) VALUES
 	(1, 'Cables'),
 	(2, 'Cutter'),
 	(3, 'Presintos'),
-	(4, 'Cobre');
+	(4, 'Cobre'),
+    (5, 'Martillo');
     
 INSERT INTO soluciona (nro_ide, nro_reclamo) VALUES
 	(5, 1),
     (6, 2),
     (7, 3),
+    (7, 7),
+    (6, 6),
+    (5, 8),
     (8, 4);
     
 INSERT INTO usa (cod_material, nro_reclamo, cantidad) VALUES
 		(1, 2, 5),
         (2, 1, 100),
         (3, 4, 800),
-        (4, 3, 969); 
+        (4, 3, 969), 
+        (5, 6, 500);
    
  INSERT INTO rellamado (cod_reclamo, nro_llamado, fecha, hora) VALUES
 	(1, 1, '2025-5-7', '5:4:7'),
