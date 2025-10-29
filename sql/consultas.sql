@@ -15,7 +15,7 @@ Si no se usó material, material y cantidad serán NULL.*/
 
 
 -- 6 b) Usuarios con más de un reclamo
- SELECT 
+SELECT 
     u.nro_ide AS nro_usuario,
     u.direccion,
     u.tel,
