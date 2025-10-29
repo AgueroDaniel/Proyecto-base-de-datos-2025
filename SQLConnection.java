@@ -1,0 +1,89 @@
+package com.db.tp;
+
+import java.sql.*;
+
+public class SQLConnection {
+
+    // Parámetros de conexión
+    private static final String URL = "jdbc:mysql://localhost:3306/mi_base_datos?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "USER";
+    private static final String PASSWORD = "PASSWORD";
+
+    private Connection connection;
+
+    /**
+     * Intenta abrir la conexión con el servidor MySQL.
+     */
+    public void connect() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Conexión establecida correctamente.");
+        } catch (ClassNotFoundException e) {
+            System.err.println("No se encontró el driver de MySQL.");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("Error al conectar a la base de datos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Devuelve la conexión actual (puede ser null si no se ha conectado correctamente).
+     */
+    public Connection getConnection() {
+        return connection;
+    }
+
+    /**
+     * Ejecuta una consulta SELECT y devuelve el ResultSet.
+     * Recuerda cerrar el ResultSet y Statement luego de usarlos.
+     */
+    public ResultSet executeQuery(String sql, Object... params) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            setParameters(statement, params);
+            return statement.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("Error al ejecutar consulta: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Ejecuta una instrucción INSERT, UPDATE o DELETE.
+     * Devuelve el número de filas afectadas.
+     */
+    public int executeUpdate(String sql, Object... params) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            setParameters(statement, params);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error al ejecutar instrucción: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Asigna los parámetros al PreparedStatement.
+     */
+    private void setParameters(PreparedStatement statement, Object... params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            statement.setObject(i + 1, params[i]);
+        }
+    }
+
+    /**
+     * Cierra la conexión si está abierta.
+     */
+    public void disconnect() {
+        if (connection != null) {
+            try {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            } catch (SQLException e) {
+                System.err.println("Error al cerrar la conexión: " + e.getMessage());
+            }
+        }
+    }
+}
