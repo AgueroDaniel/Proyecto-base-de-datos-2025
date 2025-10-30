@@ -1,4 +1,15 @@
+INSERT INTO usuario (nro_ide, direccion, tel) 
+VALUES
+	(1, 'Sabatini 1520', 4662919),
+	(2, 'Fray cardarelli 280', 4668852),
+	(3, 'General Paz 800', 4667910),
+	(4, 'Constiticion 1566', 358973669),
 
+	(5, 'Sabatini 1520', 4662919),
+	(6, 'Fray cardarelli 280', 4668852),
+	(7, 'General Paz 800', 4667910),
+	(8, 'Constiticion 1566', 358973669);
+	
 INSERT INTO empresa (nro_ide, cuit, capacidadKW) 
 VALUES
 	(1, 55789666, 49000),

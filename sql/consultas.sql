@@ -26,8 +26,8 @@ HAVING COUNT(r.nro) > 1;
 HAVING COUNT(r.nro) > 1 filtra solo los que tienen más de un reclamo.*/
 
 -- 6 a) Devolver por cada reclamo, el detalle de materiales utilizados para solucionarlo, si un reclamo no uso materiales, listarlo también
- SELECT 
-     m.descrip_mat AS material,
+SELECT 
+    m.descrip_mat AS material,
     u.cantidad,
     r.nro AS nro_reclamo,
     r.fecha,
