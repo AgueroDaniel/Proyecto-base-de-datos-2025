@@ -3,7 +3,7 @@ import java.sql.*;
 public class SQLConnection {
 
     // Parámetros de conexión
-    private static final String URL = "jdbc:mysql://localhost:3306/MI_BASE_DE_DATOS?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://localhost:3306/midb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASSWORD = "root123";
 

@@ -23,7 +23,7 @@ public class Main {
                     int id = sc.nextInt();
 
                     System.out.print("Dirección: ");
-                    String dir = sc.nextLine();
+                    String dir = sc.next();
 
                     System.out.print("Teléfono: ");
                     int tel = sc.nextInt();

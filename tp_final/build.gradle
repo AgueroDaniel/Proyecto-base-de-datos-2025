@@ -22,6 +22,10 @@ java {
 
 mainClassName = 'Main'
 
+run {
+    standardInput = System.in
+}
+
 dependencies {
 	implementation('com.mysql:mysql-connector-j:9.0.0')
 
