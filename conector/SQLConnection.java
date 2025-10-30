@@ -1,35 +1,34 @@
-package conector;
-
 import java.sql.*;
 
 public class SQLConnection {
 
     // Parámetros de conexión
-    private static final String URL = "jdbc:mysql://localhost:3306/mi_base_datos?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "USER";
-    private static final String PASSWORD = "PASSWORD";
+    private static final String URL = "jdbc:mysql://localhost:3306/midb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root123";
 
     private Connection connection;
+    private static SQLConnection sqlConnection;
+
+    private SQLConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        System.out.println("Conexión establecida correctamente.");
+    }
 
     /**
      * Intenta abrir la conexión con el servidor MySQL.
      */
-    public void connect() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión establecida correctamente.");
-        } catch (ClassNotFoundException e) {
-            System.err.println("No se encontró el driver de MySQL.");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.err.println("Error al conectar a la base de datos: " + e.getMessage());
-            e.printStackTrace();
+    public static SQLConnection getInstance() throws ClassNotFoundException, SQLException {
+        if(sqlConnection == null) {
+            sqlConnection = new SQLConnection();
         }
+        return sqlConnection;
     }
 
     /**
-     * Devuelve la conexión actual (puede ser null si no se ha conectado correctamente).
+     * Devuelve la conexión actual (puede ser null si no se ha conectado
+     * correctamente).
      */
     public Connection getConnection() {
         return connection;
