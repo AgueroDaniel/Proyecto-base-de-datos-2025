@@ -26,7 +26,7 @@ public class ReclamoDAO {
     public void insertarUsuario(int id, String dir, int tel) {
         try {
             int affected = connection.executeUpdate(
-                    "INSERT INTO usuario (nro_ide, direcion, tel) VALUES (?, ?, ?)",
+                    "INSERT INTO usuario (nro_ide, direccion, tel) VALUES (?, ?, ?)",
                     id, dir, tel);
 
             if (affected > 0) {
