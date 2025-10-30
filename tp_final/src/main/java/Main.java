@@ -18,11 +18,17 @@ public class Main {
             switch (opcion) {
                 case 1 -> {
                     sc.nextLine(); // limpiar buffer
+
+                    System.out.print("IDE: ");
+                    int id = sc.nextInt();
+
                     System.out.print("Dirección: ");
                     String dir = sc.nextLine();
+
                     System.out.print("Teléfono: ");
                     int tel = sc.nextInt();
-                    dao.insertarUsuario(dir, tel);
+
+                    dao.insertarUsuario(id, dir, tel);
                 }
                 case 2 -> {
                     System.out.print("Número de reclamo a eliminar: ");

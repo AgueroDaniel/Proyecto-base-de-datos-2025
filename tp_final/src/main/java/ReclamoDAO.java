@@ -1,7 +1,5 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class ReclamoDAO {
     private SQLConnection connection;
@@ -25,8 +23,21 @@ public class ReclamoDAO {
      * @param tel
      * @return User Id in db
      */
-    public int insertarUsuario(String dir, int tel) {
-        return 0;
+    public void insertarUsuario(int id, String dir, int tel) {
+        try {
+            int affected = connection.executeUpdate(
+                    "INSERT INTO usuario (nro_ide, direcion, tel) VALUES (?, ?, ?)",
+                    id, dir, tel);
+
+            if (affected > 0) {
+                System.out.println("Usuario insertado correctamente.");
+            } else {
+                System.out.println("ERROR al ingresar.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERROR al ingresar: " + e.getMessage());
+        }
     }
 
     /**
@@ -34,35 +45,18 @@ public class ReclamoDAO {
      * @param tel
      * @return User Id in db
      */
-    public int eliminarReclamo(int nro) {
-        Scanner sc = new Scanner(System.in); // Permite ingresar el número del reclamo por consola
-        System.out.print("Ingrese el número del reclamo que desea eliminar: ");
-        int nroReclamo = sc.nextInt(); // Lee el número entero que se ingresa(el número de reclamo) y lo guarda en la
-                                       // variable nroReclamo.
-        StringBuilder sb = new StringBuilder("DELETE FROM reclamo WHERE nro = ");
-        sb.append(nro);
-
-
-        if (PreparedStatement ps = conn.prepareStatement()) {
-            // Lo de arriba crea un objeto PrepareStatement que ejecuta una sentencia SQL
-            // para eliminar un registro de la tabla reclamo
-            // El signo ? es un parametro que se reemplaza por el numero de reclamo
-            ps.setInt(1, nroReclamo); // Reemplaza el primer parametro (?) del SQL por el valor ingresado
-            int filasAfectadas = ps.executeUpdate();
-
-            if (filasAfectadas > 0) { // Si hubo modificacion se informara por pantalla los siguientes mensajes
+    public void eliminarReclamo(int nro) {
+        try {
+            int affected = connection.executeUpdate("DELETE FROM reclamo WHERE nro = ?", nro);
+            if (affected > 0) {
                 System.out.println("Reclamo eliminado correctamente.");
             } else {
                 System.out.println("No se encontró ningún reclamo con ese número.");
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar el reclamo: " + e.getMessage());
+            System.out.println("Error al eliminar el reclamo: ");
         }
-
-        db.disconnect(); // Cierra la conexion con la base de datos
-        sc.close(); // Cierra el Scanner
-        return 0;
     }
 
     /**
@@ -71,5 +65,32 @@ public class ReclamoDAO {
      * @return User Id in db
      */
     public void listarReclamosUsuario(int nroUser) {
+        try (ResultSet rs = connection.executeQuery(
+            "SELECT nro, fecha, hora, fecha_resol, cod_motivo FROM reclamo WHERE nro_usuario = ?", 
+            nroUser
+        )) {
+            while (rs.next()) {
+                System.out.printf("- Reclamo #%d | Fecha: %s | Hora: %s | Fecha Resolución: %s | Motivo: %d%n",
+                        rs.getInt("nro"), // Número de reclamo
+                        rs.getDate("fecha"), // Fecha del reclamo
+                        rs.getTime("hora"), // Hora del reclamo
+                        rs.getDate("fecha_resol"), // Fecha de resolución
+                        rs.getInt("cod_motivo") // Código del motivo (ya no se muestra la descripción)
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try (ResultSet rs = connection.executeQuery(
+            "SELECT COUNT(*) AS cantidad FROM reclamo WHERE nro_usuario = ?", 
+            nroUser
+        )) {
+            while (rs.next()) {
+                System.out.println("\n Total de reclamos: " + rs.getInt("cantidad"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

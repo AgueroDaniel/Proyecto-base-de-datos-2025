@@ -3,7 +3,7 @@ import java.sql.*;
 public class SQLConnection {
 
     // Parámetros de conexión
-    private static final String URL = "jdbc:mysql://localhost:3306/midb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://localhost:3306/MI_BASE_DE_DATOS?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASSWORD = "root123";
 
@@ -20,7 +20,7 @@ public class SQLConnection {
      * Intenta abrir la conexión con el servidor MySQL.
      */
     public static SQLConnection getInstance() throws ClassNotFoundException, SQLException {
-        if(sqlConnection == null) {
+        if (sqlConnection == null) {
             sqlConnection = new SQLConnection();
         }
         return sqlConnection;
@@ -37,30 +37,24 @@ public class SQLConnection {
     /**
      * Ejecuta una consulta SELECT y devuelve el ResultSet.
      * Recuerda cerrar el ResultSet y Statement luego de usarlos.
+     * 
+     * @throws SQLException
      */
-    public ResultSet executeQuery(String sql, Object... params) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            setParameters(statement, params);
-            return statement.executeQuery();
-        } catch (SQLException e) {
-            System.err.println("Error al ejecutar consulta: " + e.getMessage());
-            return null;
-        }
+    public ResultSet executeQuery(String sql, Object... params) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(sql);
+        setParameters(statement, params);
+        return statement.executeQuery();
     }
 
     /**
      * Ejecuta una instrucción INSERT, UPDATE o DELETE.
      * Devuelve el número de filas afectadas.
+     * @throws SQLException 
      */
-    public int executeUpdate(String sql, Object... params) {
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            setParameters(statement, params);
-            return statement.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al ejecutar instrucción: " + e.getMessage());
-            return 0;
-        }
+    public int executeUpdate(String sql, Object... params) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(sql);
+        setParameters(statement, params);
+        return statement.executeUpdate();
     }
 
     /**
