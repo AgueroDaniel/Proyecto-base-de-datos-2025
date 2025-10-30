@@ -4,19 +4,22 @@ import java.util.Scanner;
 //import conector.op;
 //Para printear
 import java.io.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
-public int Agregar() {
+
+
+public static int Agregar() {
     Scanner sc = new Scanner(System.in);
     System.out.print("Ingrese los datos del usuario,\nPrimero su nro de identificación: ");
     int nro_ide = sc.nextInt();
+    sc.nextLine();
     System.out.print("Dirección del usuario(entre 35 caracteres): ");
     String direccion = sc.nextLine();
     System.out.print("Telefono(unico): ");
     int telefono = sc.nextInt();
-    try (Connection conn = connect();
+    SQLConnection db = new SQLConnection();
+    Connection conn = db.getConnection();
+    try (
         PreparedStatement ps = conn.prepareStatement("INSERT INTO usuario (nro_ide,dirrecion,tel) VALUES (?,?,?)")) {
         ps.setInt(1, nro_ide);
         ps.setString(2, direccion);
@@ -25,10 +28,10 @@ public int Agregar() {
     } catch (SQLException e) {
         System.out.print("ERROR al ingresar.\n");
     }
+    db.disconnect();
     sc.close();
     return 0;
 }
-
 
 
 
